@@ -1405,7 +1405,7 @@ class ApiController extends CController
     public function actionUpdateDriverLocation()
     {    	
     	
-		$json = @file_get_contents('php://input');        
+    	 $json = @file_get_contents('php://input');        
         if(!empty($json)){                   
             $json = json_decode($json,true);
             if(!is_array($json) && count((array)$json)<=1){
@@ -1416,59 +1416,216 @@ class ApiController extends CController
         
         $this->data['token'] = isset($this->data['token'])?$this->data['token']:''; 
         
-        if ( !$token=Driver::getDriverByToken($this->data['token'])) {
-            $this->msg=self::t("Token not valid");
-            $this->output();
-            Yii::app()->end();
-        }         
-        $driver_id=$token['driver_id'];
-        $params=array(
-          'location_lat'=>$this->data['lat'],
-          'location_lng'=>$this->data['lng'],
-          'last_login'=>FunctionsV3::dateNow(),
-          'last_online'=>strtotime("now"),
-          'app_version'=>isset($this->data['app_version'])?$this->data['app_version']:''
-        );
-        
-        if ( $token['on_duty']==2){
-            unset($params['last_online']);
-        }   
-        
-        $driver_id=$token['driver_id'];        
-        
-        $db=new DbExt;
-        if ( $db->updateData("{{driver}}",$params,'driver_id',$driver_id)){
-            $this->code=1;
-            $this->msg="Location set";
-            
-            /*log driver location*/            
-            //$is_record=getOption($token['user_id'],'driver_record_track_Location');
-            $is_record=getOptionA('driver_record_track_Location');
-            if ($is_record==1){
-                $logs=array(                  
-                  'user_type'=>$token['user_type'],
-                  'user_id'=>$token['user_id'],
-                  'driver_id'=>$driver_id,
-                  'latitude'=>$this->data['lat'],
-                  'longitude'=>$this->data['lng'],                  
-                  'altitude'=>isset($this->data['altitude'])?$this->data['altitude']:'',
-                  'accuracy'=>isset($this->data['accuracy'])?$this->data['accuracy']:'',
-                  'altitudeAccuracy'=>isset($this->data['altitudeAccuracy'])?$this->data['altitudeAccuracy']:'',
-                  'heading'=>isset($this->data['heading'])?$this->data['heading']:'',
-                  'speed'=>isset($this->data['speed'])?$this->data['speed']:'',
-                  'track_type'=>isset($this->data['track_type'])?$this->data['track_type']:'',                            
-                  'date_created'=>Driver::dateNow(),
-                  'ip_address'=>$_SERVER['REMOTE_ADDR'],                  
-                  'device_platform'=>isset($this->data['device_platform'])?$this->data['device_platform']:'',
-                  'date_log'=>date("Y-m-d"),
-                  'full_request'=>json_encode($_REQUEST),
-                );
-                $db->insertData("{{driver_track_location}}",$logs);
-            } 
-            
-        } else $this->msg="Failed";
-        $this->output();        
-    }    
+    	if ( !$token=Driver::getDriverByToken($this->data['token'])) {
+    		$this->msg=self::t("Token not valid");
+    		$this->output();
+    		Yii::app()->end();
+    	}     	
+    	$driver_id=$token['driver_id'];
+    	$params=array(
+    	  'location_lat'=>$this->data['lat'],
+    	  'location_lng'=>$this->data['lng'],
+    	  'last_login'=>FunctionsV3::dateNow(),
+	      'last_online'=>strtotime("now"),
+	      'app_version'=>isset($this->data['app_version'])?$this->data['app_version']:''
+    	);
+    	
+    	if ( $token['on_duty']==2){
+    	    unset($params['last_online']);
+    	}   
+    	
+    	$driver_id=$token['driver_id'];    	
+    	
+    	$db=new DbExt;
+    	if ( $db->updateData("{{driver}}",$params,'driver_id',$driver_id)){
+    		$this->code=1;
+    		$this->msg="Location set";
+    		
+    		/*log driver location*/    		
+    		//$is_record=getOption($token['user_id'],'driver_record_track_Location');
+    		$is_record=getOptionA('driver_record_track_Location');
+    		if ($is_record==1){
+	    		$logs=array(	    		  
+	    		  'user_type'=>$token['user_type'],
+	    		  'user_id'=>$token['user_id'],
+	    		  'driver_id'=>$driver_id,
+	    		  'latitude'=>$this->data['lat'],
+	    	      'longitude'=>$this->data['lng'],	    	      
+	    	      'altitude'=>isset($this->data['altitude'])?$this->data['altitude']:'',
+	    	      'accuracy'=>isset($this->data['accuracy'])?$this->data['accuracy']:'',
+	    	      'altitudeAccuracy'=>isset($this->data['altitudeAccuracy'])?$this->data['altitudeAccuracy']:'',
+	    	      'heading'=>isset($this->data['heading'])?$this->data['heading']:'',
+	    	      'speed'=>isset($this->data['speed'])?$this->data['speed']:'',
+	    	      'track_type'=>isset($this->data['track_type'])?$this->data['track_type']:'',	    	      	      
+	    	      'date_created'=>Driver::dateNow(),
+	    	      'ip_address'=>$_SERVER['REMOTE_ADDR'],	    	      
+	    	      'device_platform'=>isset($this->data['device_platform'])?$this->data['device_platform']:'',
+	    	      'date_log'=>date("Y-m-d"),
+	    	      'full_request'=>json_encode($_REQUEST),
+	    		);
+	    		$db->insertData("{{driver_track_location}}",$logs);
+    		} 
+    		
+    	} else $this->msg="Failed";
+    	$this->output();    	
+    }
+    
+    public function actionClearNofications()
+    {
+    	if ( !$token=Driver::getDriverByToken($this->data['token'])) {
+    		$this->msg=self::t("Token not valid");
+    		$this->output();
+    		Yii::app()->end();
+    	}     	
+    	$driver_id=$token['driver_id'];
+    	$stmt="UPDATE 
+    	{{driver_pushlog}}
+    	SET
+    	is_read='1'
+    	WHERE
+    	driver_id=".self::q($driver_id)."
+    	AND
+    	is_read='2'
+    	";
+    	$this->code=1;
+    	$this->msg="OK";
+    	$db=new DbExt;
+    	$db->qry($stmt);
+    	$this->output(); 
+    }
+    
+    public function actionDeviceConnected()
+    {
+    	if (!isset($this->data['token'])){
+    		$this->data['token']='';
+    	}
+    	if ( !$token=Driver::getDriverByToken($this->data['token'])) {
+    		$this->msg="token not found";
+    		$this->output();
+    		Yii::app()->end();
+    	}     	
+    	$driver_id=$token['driver_id'];
+    	Driver::updateLastOnline($driver_id);
+    	$this->code=1;
+    	$this->msg="OK";
+    	$this->output(); 
+    }
+    
+    public function actionLogout()
+    {
+    	if ( !$token=Driver::getDriverByToken($this->data['token'])) {
+    		$this->msg=self::t("Token not valid");
+    		$this->output();
+    		Yii::app()->end();
+    	} 
+    	$driver_id=$token['driver_id'];
+    	$params=array(    	  
+    	  'last_online'=>time() - 300,
+    	  'ip_address'=>$_SERVER['REMOTE_ADDR']
+    	);
+    	
+    	$db=new DbExt;
+    	$db->updateData('{{driver}}',$params,'driver_id',$driver_id);
+    	$this->code=1;
+    	$this->msg="OK";
+    	$this->output();
+    }
+    
+    public function actionaddNotes()
+    {    	
+    	if (!isset($this->data['token'])){
+    		$this->data['token']='';
+    	}
+    	if ( !$token=Driver::getDriverByToken($this->data['token'])) {
+    		$this->msg=self::t("token not found");
+    		$this->output();
+    		Yii::app()->end();
+    	}     	
+    	$driver_id=$token['driver_id'];    	
+    	if (empty($this->data['notes'])){
+    		$this->msg=self::t("Notes is required");
+    		$this->output();
+    		Yii::app()->end();
+    	}
+    	
+    	$task_id=isset($this->data['task_id'])?$this->data['task_id']:'';
+    	
+    	if ( !$task_info=Driver::getTaskId($task_id)){    		
+    		$this->msg=self::t("Task not found");
+    		$this->output();
+    		Yii::app()->end();
+    	}    	
+
+    	$driver_name=$token['first_name'];
+    	
+    	$args=array(
+    	  '{driver_name}'=>$driver_name
+    	);
+    	
+    	$params=array(
+    	  'status'=>"note",
+    	  'remarks'=> $driver_name." ".self::t("added a note"),
+    	  'date_created'=>Driver::dateNow(),
+    	  'ip_address'=>$_SERVER['REMOTE_ADDR'],
+    	  'task_id'=>$this->data['task_id'],
+    	  'driver_id'=>$driver_id,
+    	  'driver_location_lat'=>$token['location_lat'],
+    	  'driver_location_lng'=>$token['location_lng'],
+    	  'remarks2'=>"{driver_name} added a note",
+    	  'remarks_args'=>json_encode($args),
+    	  'notes'=>$this->data['notes'],
+    	  'order_id'=>isset($task_info['order_id'])?$task_info['order_id']:''
+    	);
+    	
+    	$db=new DbExt;
+    	$db->insertData("{{order_history}}",$params);
+    	unset($db);    	
+    	$this->code=1;
+    	$this->msg="OK";
+    	$this->details=array(
+    	  'task_id'=>$this->data['task_id']
+    	);
+    	      	
+    	if ( $task_info['trans_type']=="delivery"){  	
+    	    Driver::sendNotificationCustomer('DELIVERY_NOTES',$task_info);
+    	} else Driver::sendNotificationCustomer('PICKUP_NOTES',$task_info);
+    	
+    	$this->output();
+    }
+    
+    public function actionloadNotes()
+    {
+    	
+    	if (!isset($this->data['token'])){
+    		$this->data['token']='';
+    	}
+    	if ( !$token=Driver::getDriverByToken($this->data['token'])) {
+    		$this->msg=t("token not found");
+    		$this->output();
+    		Yii::app()->end();
+    	}     	
+    	
+    	$driver_id=$token['driver_id'];    	    	
+    	
+    	if ($res=Driver::getNotes($this->data['task_id'])){ 
+    		
+    		$resp=Driver::getTaskId($this->data['task_id']);      		
+    		$this->code=1; 
+    		$this->msg= $resp['status'];
+    		$data=array();
+    		foreach ($res as $val) {    			    			
+    			$data[]=array(
+    			  'id'=>$val['id'],
+    			  'date_created'=>date("Y-m-d G:i:s",strtotime($val['date_created'])),     			  
+    			  'notes'=>$val['notes']
+    			);
+    		}
+    		$this->details=$data;
+    	} else $this->msg=self::t("No result");
+    	    	    
+    	$this->output();
+    }
+    
     public function actiondeleteNotes()
     {
     	if (!isset($this->data['token'])){

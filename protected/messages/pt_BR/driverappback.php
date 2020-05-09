@@ -142,4 +142,5 @@ $dict['pending_task'] = "Tarefas pendentes";
 $dict['completed_task'] = "Tarefas completas";
 $dict['Customer signature is required'] = "Assinatura obrigatória";
 
+
 return $dict;

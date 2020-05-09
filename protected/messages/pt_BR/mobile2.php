@@ -358,7 +358,7 @@ $lang['Your favorite list is empty'] = 'Sua lista de favoritos esta vazia';
 $lang['Your credit card list is empty'] = 'Sua lista de cartão de crédito está vazia';
 $lang['Your address book list is empty'] = 'Sua lista do catalogo de enderecos está vazia';
 $lang['No available language'] = 'Nenhum idioma disponível';
-$lang['Please select rating'] = 'Por favor selecione rating';
+$lang['Please select rating'] = 'Por favor selecione qual a sua opinião';
 $lang['invalid order id'] = 'ID inválido do pedido';
 $lang['Your review has been published.'] = 'Seu comentário foi publicado.';
 $lang['ERROR. cannot insert data.'] = 'Erro, nao pode inserir dados';
@@ -569,7 +569,7 @@ $lang['Free Delivery On Orders Over'] = 'Entrega gratuita em encomendas superior
 $lang['PAYMENT SUCCESS'] = 'SUCESSO DO PAGAMENTO';
 $lang['Your order is on its way'] = 'Seu pedido esta a caminho';
 $lang['TRACK ORDER'] = 'ACOMPANHAR PEDIDO';
-$lang['BACK TO HOME'] = 'VOLTAR PARA CASA';
+$lang['BACK TO HOME'] = 'Voltar para a Home';
 $lang['Error processing transaction'] = 'Erro ao processar a transacao';
 $lang['payment successfull with payment reference id [ref]'] = 'pagamento bem-sucedido com o ID de referencia de pagamento [ref]';
 $lang['client information not found'] = 'informacoes do cliente nao encontradas';
@@ -813,7 +813,7 @@ $lang['invalid merchant id or category id'] = 'codigo de comerciante invalido ou
 /*ADDED LANGUAGE 1.3*/	
 $lang['Sorry but you can select only'] = 'Desculpe, mas voce pode selecionar apenas';
 $lang['addon'] = 'addon';
-$lang['REGISTRATION SUCCESS'] = 'SUCESSO DE INSCRIcaO';
+$lang['REGISTRATION SUCCESS'] = 'Inscrição concluída com sucesso';
 $lang['Common Settings'] = 'Configuracoes comuns';
 $lang['Turn off mobile prefix'] = 'Desativar prefixo movel';
 $lang['Registration Options'] = 'Opcoes de registro';
@@ -924,5 +924,8 @@ $lang['Deliver ASAP'] = 'Entrega Rápida';
 $lang['Change'] = 'Troco para';
 $lang['UPDATE CART'] = 'Alterar pedido';
 $lang['Cart updated'] = 'Pedido alterado com sucesso';
+$lang['thank you for signing up'] = 'Agora baixe o app do Entregador';
+$lang['Sorry but your mobile number is already exist in our records'] = 'Desculpe, mas o seu numero de celular ja existe em nossa base de dados';
+
 
 return $lang;

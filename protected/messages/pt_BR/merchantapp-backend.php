@@ -169,13 +169,13 @@ $lang['Device id not found please relogin again'] = 'Identificação do disposit
 $lang['invalid device platform'] = 'plataforma de dispositivo inválida';
 $lang['Invalid order id'] = 'ID do pedido inválido';
 $lang['You have [count] new cancel order request'] = 'Você tem [count] nova solicitação de pedido de cancelamento';
-$lang['[total] New Order has been placed.'] = '[total] O novo pedido foi feito';
+$lang['[total] New Order has been placed.'] = 'Você tem [total] pedidos vendidos';
 $lang['Enabled Request Cancel Order Alert'] = 'Pedido ativado cancelar alerta de pedido';
 $lang['Cancel Alert Interval'] = 'Cancelar intervalo de alerta';
 $lang['This will continue to alert when there is cancel order it will not stop unless the order is open'] = 'Isso continuará a alertar quando houver um pedido de cancelamento e não sera interrompido a menos que o pedido esteja aberto';
 $lang['Cancel Order Alert Interval'] = 'Cancelar intervalo de alerta do pedido';
 $lang['in seconds. default is 15 seconds'] = 'Em segundos o padrao e 15 segundos';
-$lang['Order id #[order_id]'] = '';
+$lang['Order id #[order_id]'] = 'Clique para visualizar';
 $lang['run this cron every 5 minutes'] = 'Execute este cron a cada 5 minutos';
 
 /*2.5*/
@@ -185,5 +185,9 @@ $lang['The order status that will set when the request order cancel is approved'
 $lang['Request Cancel Order approved status'] = 'Solicitar cancelamento de status aprovado do pedido';
 $lang['pending'] = 'Pendente';
 $lang['accepted'] = 'Pedido aceito';
+$lang['assigned'] = 'Atribuído';
+$lang['paid'] = 'Pago';
+$lang['Message send'] = 'Mensagem enviado com sucesso';
+
 
 return $lang;

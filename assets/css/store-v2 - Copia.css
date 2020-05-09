@@ -408,7 +408,7 @@ color:#fff;
 .orange-button,
 .razorpay-payment-button
 {
-background:#ff0a0a;
+background:#f75d34;
 border:1px solid #f75d34;
 color:#fff;
 padding: 5px 8px;
@@ -446,7 +446,7 @@ padding: 8px 25px;
 a.orange-button:hover,
 button.orange-button:hover,
 input.orange-button:hover,
-input.orante-button:focus,
+input.orange-button:focus,
 a.orange-button:focus,
 #menu .logout-menu a:hover
 {
@@ -560,7 +560,7 @@ background:url("../images/section1-bg.png") bottom center #ededed repeat-x;
 }
 
 .section-grey2{
-background:#ffffff;
+background:#eff2f5;
 }
 
 .section-feature-resto{
@@ -939,7 +939,7 @@ margin-bottom:20px;
 }
 
 .result-merchant h2{
-color:#ff0a0a;
+color:#f75d34;
 }
 
 .result-merchant .inner
@@ -1756,7 +1756,7 @@ max-width: 550px;
 .section-receipt .inner h1,
 .section-orangeform .inner h1
 {
-background: #ff0a0a;
+background: #f75d34;
 color: #fff;
 font-family: "Lato",sans-serif;
 font-size: 20px;

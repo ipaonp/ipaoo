@@ -6591,28 +6591,6 @@ class FunctionsV3
 				}
 			}
 		}
-		
-		/*MOBILE VERSION 2*/
-
-			if (FunctionsV3::hasModuleAddon("mobileappv2")){
-
-				Yii::app()->setImport(array(			
-
-				'application.modules.mobileappv2.components.*',
-
-				));
-
-			if(method_exists('mobileWrapper','OrderTrigger')){	    				    			
-
-				mobileWrapper::OrderTrigger($data['order_id'],$cancel_status,'','order_request_cancel');
-
-			}
-
-		}
-		
-		
-		
-		
 	}
 	
 	public static function getNewCancelOrder($merchant_id='')

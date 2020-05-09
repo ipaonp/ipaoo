@@ -4267,7 +4267,7 @@ class ApiController extends CController
 				$val['add_review'] = $add_review;
 				
 				$show_cancel = false; $cancel_status='';
-				if(FunctionsV3::canCancelOrderNew($val['request_cancel'],$val['date_created_raw'],$val['status_raw'],$val['order_locked'],$val['request_cancel_status'],$cancel_order_enabled)){
+				if(FunctionsV3::canCancelOrderNew($val['request_cancel'],$val['date_created'],$val['status_raw'],$val['order_locked'],$val['request_cancel_status'],$cancel_order_enabled)){
 					if($val['request_cancel']==1){
 						$cancel_status = mt("Pending for review");
 					} else $show_cancel=true;									
